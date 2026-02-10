@@ -1,0 +1,40 @@
+project_name: 项目名称
+spi_config:
+  vcc: 5V
+  io: 3.3V
+  speed: 468.75K
+  clk: LOW/1EDG
+  bit: MSB
+  rx_size: 2字节
+global_settings:
+  frame_head: '40'
+  channel: '8'
+  color_depth: '1024'
+  horizontal_resolution: '3840'
+  vertical_resolution: '2160'
+data_group:
+  默认组:
+    data:
+    - name: 测试1
+      data: 40 0A
+    - name: 测试2
+      data: 40 0B
+    - name: 随便起的名字
+      data: 40 0C 00 11
+test_group:
+  新建分组1:
+  - name: 测试2
+    data: 01 11 11 11 11
+  - name: 测试3
+    data: 04 53
+  新建分组2:
+  - name: 测试2
+    data: 01 11 11 11 11
+  - name: 测试2
+    data: 01 11 11 11 11
+  新建分组3:
+  - name: 测试3
+    data: 04 53
+  - name: 测试2
+    data: 01 11 11 11 11
+function_config: []
