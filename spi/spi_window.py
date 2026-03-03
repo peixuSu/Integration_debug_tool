@@ -53,7 +53,7 @@ class SPIWindow(QObject):
         # 默认关闭日志的折叠
         self.ui.button_fold_config.clicked.connect(self.fold_spi_config)
         self.visible_state = False
-        self.ui.spi_config_widget.setVisible(False)
+        self.ui.widget_spi_configs.setVisible(False)
 
         self.ui.button_refresh.clicked.connect(self.refresh_connect)
         self.ui.button_receive.clicked.connect(self.spi_receive)
@@ -105,10 +105,10 @@ class SPIWindow(QObject):
         切换SPI配置面板的显示状态，实现配置区域的折叠和展开功能。
         """
         if self.visible_state:
-            self.ui.spi_config_widget.setVisible(False)
+            self.ui.widget_spi_configs.setVisible(False)
             self.visible_state = False
         else:
-            self.ui.spi_config_widget.setVisible(True)
+            self.ui.widget_spi_configs.setVisible(True)
             self.visible_state = True
     
     def refresh_connect(self):

@@ -37,4 +37,11 @@ test_group:
     data: 04 53
   - name: 测试2
     data: 01 11 11 11 11
-function_config: []
+function_config:
+- address: 0A
+  record: 是
+  function: sfa
+  var_name: 无
+  formula: 无
+  input_radix: 十六进制
+  data_width: 低8bit

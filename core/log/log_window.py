@@ -31,8 +31,8 @@ class LogWindow(QWidget):
         self.application = application
 
 
-        self.ui.widget_log.setVisible(True)
-        self.widget_log_visible = True
+        self.ui.gridWidget_log.setVisible(True)
+        self.gridWidget_log_visible = True
 
         self.ui.listWidget_log.setContextMenuPolicy(Qt.CustomContextMenu)
         self.ui.listWidget_log.customContextMenuRequested.connect(self.show_listWidget_log_menu)
@@ -41,28 +41,28 @@ class LogWindow(QWidget):
         self.ui.listWidget_log_normal.customContextMenuRequested.connect(self.show_listWidget_log_normal_menu)
 
         # 设置信号连接
-        self.setup_connect()
+        # self.setup_connect()
 
         self.listWidget_log = []
 
         self.listWidget_log_normal_list = []
 
-    def setup_connect(self):
-        """
-        设置按钮信号与槽函数的连接
-        """
+    # def setup_connect(self):
+    #     """
+    #     设置按钮信号与槽函数的连接
+    #     """
 
-        self.ui.pushButton_log.clicked.connect(self.widget_log_visible_toggle)
+    #     self.ui.pushButton_log.clicked.connect(self.gridWidget_log_visible_toggle)
 
-    def widget_log_visible_toggle(self):
-        """
-        切换日志窗口可见状态
-        """
-        self.widget_log_visible = not self.widget_log_visible
-        if self.widget_log_visible:
-            self.ui.widget_log.setVisible(True)
-        else:
-            self.ui.widget_log.setVisible(False)
+    # def gridWidget_log_visible_toggle(self):
+    #     """
+    #     切换日志窗口可见状态
+    #     """
+    #     self.gridWidget_log_visible = not self.gridWidget_log_visible
+    #     if self.gridWidget_log_visible:
+    #         self.ui.gridWidget_log.setVisible(True)
+    #     else:
+    #         self.ui.gridWidget_log.setVisible(False)
 
     def log(self, message, state=0):
         """

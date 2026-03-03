@@ -448,65 +448,45 @@ class SubWindowFunctionConfig(QWidget):
             item.setText(4, "无")
             self.yaml.update_function_config()
             return
-        
-        # 替换中文逗号为英文逗号并去除多余空格
-        processed_formula = formula.replace('，', ',').strip()
-        
-        # 分割公式并去除每部分的空格
-        formulas = [f.strip() for f in processed_formula.split(',') if f.strip()]
-        
-        # 最多允许两个公式
-        if len(formulas) > 2:
+
+        # 检查公式完整性
+        if not self.check_formula_completeness(formula):
             QMessageBox.warning(
                 self, 
                 "警告", 
-                "最多只能输入两个公式，用逗号分隔！"
+                "公式不完整！"
             )
             # 恢复原始值
             item.setText(4, original_value)
             return
 
-        # 检查每个公式的完整性、语法和有效性
-        for i, single_formula in enumerate(formulas):
-            # 检查公式完整性
-            if not self.check_formula_completeness(single_formula):
-                QMessageBox.warning(
-                    self, 
-                    "警告", 
-                    f"第{i+1}个公式不完整！"
-                )
-                # 恢复原始值
-                item.setText(4, original_value)
-                return
-
-            # 检查语法
-            syntax_valid, error_msg = self.check_syntax(single_formula)
-            if not syntax_valid:
-                QMessageBox.warning(
-                    self, 
-                    "警告", 
-                    f"第{i+1}个公式语法错误：{error_msg}"
-                )
-                # 恢复原始值
-                item.setText(4, original_value)
-                return
-            
-            # 检查公式有效性
-            check_formula = self.check_formula(single_formula, var_name)
-            if not check_formula["is_valid"]:
-                QMessageBox.warning(
-                    self, 
-                    "警告", 
-                    f"第{i+1}个公式出现错误：{check_formula['error_message']}"
-                )
-                # 恢复原始值
-                item.setText(4, original_value)
-                return
-
-        # 将处理后的公式重新组合（用英文逗号分隔）
-        final_formula = ','.join(formulas)
+        # 检查语法
+        syntax_valid, error_msg = self.check_syntax(formula)
+        if not syntax_valid:
+            QMessageBox.warning(
+                self, 
+                "警告", 
+                f"公式语法错误：{error_msg}"
+            )
+            # 恢复原始值
+            item.setText(4, original_value)
+            return
         
-        item.setText(4, final_formula)
+        # 检查公式有效性
+        check_formula = self.check_formula(formula, var_name)
+        if not check_formula["is_valid"]:
+            QMessageBox.warning(
+                self, 
+                "警告", 
+                f"公式出现错误：{check_formula['error_message']}"
+            )
+            # 恢复原始值
+            item.setText(4, original_value)
+            return
+
+
+
+        item.setText(4, formula)
         self.yaml.update_function_config()
 
     def _split_ranges_smart(self, range_string):
@@ -634,9 +614,6 @@ class SubWindowFunctionConfig(QWidget):
             if safe_formula == "无":
                 return {"is_valid": True}
             
-            # 检查是否是多个公式（用逗号分隔）
-            formulas = [f.strip() for f in safe_formula.split(',')]
-            
             # 检查是否是多个变量（用逗号分隔）
             var_names = []
             if var_name and var_name != "无":
@@ -650,29 +627,25 @@ class SubWindowFunctionConfig(QWidget):
                 "垂直分辨率": 1080
             }
             
-            # 验证每个公式
-            for i, single_formula in enumerate(formulas):
-                # 特殊处理：如果单个公式是"无"，跳过验证
-                if single_formula == "无":
-                    continue
-                    
+            # 当输入公式非"无"时，进行验证
+            if safe_formula != "无":
+
                 # 创建局部变量环境
                 local_vars = {}
                 
                 # 添加预设参数
                 for key, value in preset_params.items():
-                    if key in single_formula:
+                    if key in safe_formula:
                         local_vars[key] = value
                 
-                # 根据公式序号分配对应的变量
-                if i < len(var_names):
-                    # 为当前公式分配对应的变量
-                    local_vars[var_names[i]] = i + 1  # 给变量赋一个测试值
+                # 为公式中的参数添加一个默认值用于计算
+                if var_names:
+                    local_vars[var_names[0]] = 1
                 
-                # 尝试计算单个公式
-                eval(single_formula, {"__builtins__": {}}, local_vars)
-            
-            return {"is_valid": True}
+                # 尝试计算公式
+                eval(safe_formula, {"__builtins__": {}}, local_vars)
+                
+                return {"is_valid": True}
         except Exception as e:
             return {"is_valid": False, "error_message": f"公式计算错误: {str(e)}"}
             
@@ -772,7 +745,7 @@ class SubWindowFunctionConfig(QWidget):
 
             combo_box_data_width = QComboBox()
             combo_box_data_width.addItems(["低8bit", "全16bit"])
-            combo_box_data_width.setCurrentText("data_width")
+            combo_box_data_width.setCurrentText(data_width)
             combo_box_data_width.currentTextChanged.connect(self.combox_changed)
 
             self.ui.tree_config.setItemWidget(tree_item, 6, combo_box_data_width)
