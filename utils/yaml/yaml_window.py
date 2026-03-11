@@ -126,7 +126,7 @@ class YAMLWindow(QObject):
         # 保存文件路径
         self.file_path = file_path
 
-        print(f"当前的文件路径为: {self.file_path}")
+        # print(f"当前的文件路径为: {self.file_path}")
 
         # self.yaml_loadeding = True
 
