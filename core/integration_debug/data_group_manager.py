@@ -648,7 +648,9 @@ class DataGroupManager(QObject):
             group_data (dict): 包含所有数据组数据的字典
         """
 
-        
+        # 清空原先的下拉列表
+        self.ui.combo_box_data_group.clear()
+
         self.data_group_manager = group_data
 
         # 获取所有数据组的名称

@@ -62,10 +62,10 @@ class TestGroupWindow(QObject):
         header = self.ui.tree_group.header()
         # 设置第一列的最小和最大宽度
         header.setSectionResizeMode(0, QHeaderView.Interactive)  # 允许交互调整
-        header.setMinimumSectionSize(110)# 最小宽度
-        header.resizeSection(0, 130)
-        # 设置第一列的最大宽度
-        header.setMaximumSectionSize(160)# 最大宽度
+        # header.setMinimumSectionSize(110)# 最小宽度
+        # header.resizeSection(0, 130)
+        # # 设置第一列的最大宽度
+        # header.setMaximumSectionSize(160)# 最大宽度
         
         # 设置第二列不可编辑
         self.ui.tree_group.setColumnEditable(1, False)
