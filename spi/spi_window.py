@@ -355,6 +355,7 @@ class SPIWindow(QObject):
 
         self.ui.combo_box_size.addItem("2字节", 2)
         self.ui.combo_box_size.addItem("4字节", 4)
+        self.ui.combo_box_size.addItem("6字节", 6)
         self.ui.combo_box_size.addItem("8字节", 8)
         self.ui.combo_box_size.addItem("16字节", 16)
         self.ui.combo_box_size.addItem("32字节", 32)
